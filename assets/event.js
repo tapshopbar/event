@@ -38,9 +38,11 @@
   if (E.gallery) html += '<section class="s gal-s"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.gallery.label) + '</span><h2>' + E.gallery.title + '</h2>' + (E.gallery.lead ? '<p>' + E.gallery.lead + '</p>' : '') + '</div><div class="gal">' +
     E.gallery.items.map(function (g) { return '<figure class="rv' + (g.wide ? ' wide' : '') + '"><img loading="lazy" src="' + img(g.img) + '" alt="' + esc(g.cap || '모임 사진') + '"' + (g.pos ? ' style="object-position:' + esc(g.pos) + '"' : '') + '>' + (g.cap ? '<figcaption>' + esc(g.cap) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div></div></section>';
 
-  // video (선택) : E.video = { src, poster, label, title, lead, wide }
-  if (E.video && E.video.src) html += '<section class="s" id="film"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.video.label || 'TAP SHOP BAR FILM') + '</span><h2>' + (E.video.title || '탭샵바를 소개합니다') + '</h2>' + (E.video.lead ? '<p>' + E.video.lead + '</p>' : '') + '</div>' +
-    '<div class="vid rv' + (E.video.wide ? ' wide' : '') + '"><video src="' + esc(E.video.src) + '"' + (E.video.poster ? ' poster="' + esc(img(E.video.poster)) + '"' : '') + ' controls playsinline preload="metadata"></video></div></div></section>';
+  // video (선택) : E.video = { youtube: 영상ID 또는 src: mp4, poster, label, title, lead, wide }
+  if (E.video && (E.video.src || E.video.youtube)) html += '<section class="s" id="film"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.video.label || 'TAP SHOP BAR FILM') + '</span><h2>' + (E.video.title || '탭샵바를 소개합니다') + '</h2>' + (E.video.lead ? '<p>' + E.video.lead + '</p>' : '') + '</div>' +
+    '<div class="vid rv' + (E.video.wide ? ' wide' : '') + '">' + (E.video.youtube
+      ? '<iframe src="https://www.youtube-nocookie.com/embed/' + esc(E.video.youtube) + '?rel=0&amp;playsinline=1" title="' + esc(E.video.alt || 'TAP SHOP BAR 영상') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>'
+      : '<video src="' + esc(E.video.src) + '"' + (E.video.poster ? ' poster="' + esc(img(E.video.poster)) + '"' : '') + ' controls playsinline preload="metadata"></video>') + '</div></div></section>';
 
   // course
   html += '<section class="s paper" id="course"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.courseLabel || 'THE COURSE') + '</span><h2>' + E.courseTitle + '</h2><p>' + E.courseLead + '</p></div><div class="course">' +
