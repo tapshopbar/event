@@ -23,6 +23,9 @@
 
 ## 지켜야 할 것
 - 페이지 맨 아래 음주 경고문구 3종은 지우지 않는다.
-- 슬로건은 항상 소문자 `wine is second americano`.
+- 슬로건은 항상 소문자 `wine is second americano`, BI 표기(Pretendard ExtraBold, tsb.wine 홈과 같음). 로고는 assets/img/wordmark.png (BI 워드마크).
+- 글씨는 BI대로 Pretendard만 (제목 ExtraBold). 세리프(Noto Serif 등) 쓰지 않는다 (코치님 11/18).
+- 손님용 글은 짧게: 한 줄 안내, 설명 문단 빼기. `showWhen: false`면 첫 화면 DATE/TIME/PLACE 줄을 숨긴다(아래 카드와 중복).
+- 영상은 `video: { src, poster, title }`를 넣으면 갤러리 아래에 나온다(선택).
 - 손님에게 링크를 보내기 전 메뉴·시간·회비를 매장과 확정한다 (링크 발송은 승인 후).
 - 검색에 안 잡히게 `noindex` 유지 (초대받은 손님 전용).
