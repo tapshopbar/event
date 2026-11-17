@@ -33,6 +33,10 @@
       return '<div class="fact"><small>' + esc(f.k) + '</small><b>' + esc(f.v) + '</b>' + (f.s ? '<span>' + esc(f.s) + '</span>' : '') + '</div>';
     }).join('') + '</div></div></section>';
 
+  // gallery (선택)
+  if (E.gallery) html += '<section class="s gal-s"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.gallery.label) + '</span><h2>' + E.gallery.title + '</h2>' + (E.gallery.lead ? '<p>' + E.gallery.lead + '</p>' : '') + '</div><div class="gal">' +
+    E.gallery.items.map(function (g) { return '<figure class="rv' + (g.wide ? ' wide' : '') + '"><img loading="lazy" src="' + img(g.img) + '" alt="' + esc(g.cap || '모임 사진') + '"' + (g.pos ? ' style="object-position:' + esc(g.pos) + '"' : '') + '>' + (g.cap ? '<figcaption>' + esc(g.cap) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div></div></section>';
+
   // course
   html += '<section class="s paper" id="course"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.courseLabel || 'THE COURSE') + '</span><h2>' + E.courseTitle + '</h2><p>' + E.courseLead + '</p></div><div class="course">' +
     E.course.map(function (c) {

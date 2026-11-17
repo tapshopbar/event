@@ -210,3 +210,12 @@ footer small{display:block;font-size:12px;line-height:1.7;color:rgba(255,255,255
 }
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 .deadline .dday b{color:#fff}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gal figure{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/4;background:#eee;margin:0}
+.gal figure.wide{grid-column:span 2;aspect-ratio:auto}
+.gal figure.wide img{position:absolute;inset:0}
+.gal img{width:100%;height:100%;object-fit:cover}
+.gal figcaption{position:absolute;left:10px;bottom:10px;background:rgba(14,14,14,.55);color:#fff;font-size:12px;border-radius:999px;padding:4px 10px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+@media (max-width:900px){.gal{grid-template-columns:1fr 1fr;gap:8px}.gal figure.wide{aspect-ratio:4/3}}
