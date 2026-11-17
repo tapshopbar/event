@@ -196,7 +196,7 @@ footer small{display:block;font-size:12px;line-height:1.7;color:rgba(255,255,255
   .tips,.notes{grid-template-columns:1fr}
   section.s{padding:60px 0}
   .s-head{margin-bottom:26px}
-  .brand span{display:none}
+  .brand > span:not(.dots){display:none}
   .mcta{display:flex;position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));z-index:30;gap:8px;transform:translateY(140%);transition:transform .3s}
   .mcta.on{transform:none}
   .mcta .btn{flex:1;box-shadow:0 10px 30px rgba(74,11,24,.35)}
