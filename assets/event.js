@@ -25,6 +25,7 @@
     '<div class="kicker">' + dots + '<span class="lbl">' + esc(E.kicker) + '</span></div>' +
     '<h1>' + E.titleHtml + '</h1>' +
     '<p class="lead">' + E.lead + '</p>' +
+    (E.place ? '<a class="place" href="#way"><b>' + esc(E.place.name) + '</b>' + (E.place.sub ? '<span>' + esc(E.place.sub) + '</span>' : '') + '</a>' : '') +
     (E.showWhen === false ? '' : '<div class="when"><div><small>DATE</small><b>' + esc(E.dateText) + '</b></div><div><small>TIME</small><b>' + esc(E.timeText) + '</b></div><div><small>PLACE</small><b>' + esc(E.venue.name) + '</b></div></div>') +
     (E.notice ? '<div class="notice"><span class="tag">안내</span><div>' + E.notice + '</div></div>' : '') +
     '<div class="cta">' + (closed ? '' : '<a class="btn wine" href="#rsvp">참석 등록하기</a>') + '<a class="btn ghost" href="#course">코스 보기</a>' +
