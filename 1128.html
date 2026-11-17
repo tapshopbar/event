@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>건강·운동 모임 송년회 · 탭샵바 청계</title>
+<title>강남·서초·송파 걷기 모임 송년회 · 탭샵바 청계</title>
 <meta name="robots" content="noindex,nofollow">
 <meta name="description" content="11월 28일(토) 오전 11:30, 탭샵바 청계천삼일빌딩점. 오늘의 코스, 참석 등록, 오시는 길. 등록 마감 11월 25일(수).">
 <meta property="og:type" content="website">
-<meta property="og:title" content="건강·운동 모임 송년회 · 11.28(토) 11:30">
+<meta property="og:title" content="강남·서초·송파 걷기 모임 송년회 · 11.28(토) 11:30">
 <meta property="og:description" content="탭샵바 청계천삼일빌딩점 · 오늘의 코스와 참석 등록 (11/25 마감)">
 <meta property="og:image" content="https://tsb.wine/event/assets/img/og_1128.jpg">
 <meta name="theme-color" content="#FFFDFC">
@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600&display=swap">
-<link rel="stylesheet" href="assets/event.css?v=2">
+<link rel="stylesheet" href="assets/event.css?v=4">
 </head>
 <body>
 <div id="app"></div>
@@ -24,30 +24,43 @@
 /* ===== 이 행사만의 내용 (새 행사는 이 블록만 바꾸면 된다. README.md 참고) ===== */
 window.EVENT = {
   code: '1128-청계-건강운동',
-  title: '건강·운동 모임 송년회',
+  title: '강남·서초·송파 걷기 모임 송년회',
   kicker: '2026 Year-end lunch · Private',
-  titleHtml: '건강·운동 모임<br><em>송년회</em>에 초대합니다',
-  lead: '한 해 동안 건강을 함께 챙긴 분들과 와인 한 잔으로 나누는 점심. 탭샵바 청계천삼일빌딩점이 정성껏 준비해 둘게요.',
+  titleHtml: '강남·서초·송파<br>걷기 모임 <em>송년회</em>에<br>초대합니다',
+  lead: '남산 숲길, 서촌 골목, 비 오는 날의 우산까지. 올 한 해 함께 걸어온 분들과 와인 한 잔으로 나누는 점심이에요. 한 해의 마지막 걸음은 청계천 옆 탭샵바에서, 정성껏 준비해 둘게요.',
   dateText: '11월 28일 토요일',
   timeText: '오전 11:30 – 오후 2:30',
   deadlineISO: '2026-11-25T23:59:59+09:00',
   deadlineText: '11월 25일(수)',
   notice: '<b>장소가 바뀌었어요.</b> 마곡점이 아니라 <b>청계천삼일빌딩점</b>(종로, 청계천 옆)에서 열려요. 아래 오시는 길을 확인해 주세요.',
   heroImg: 'hero.jpg', heroAlt: '탭샵바 청계점 테이블에서 와인으로 건배하는 모습',
-  stampTop: 'PRIVATE', stampSub: '건강·운동 모임 · 약 30명',
+  stampTop: 'PRIVATE', stampSub: '강남·서초·송파 걷기 모임 · 약 30명',
   facts: [
     { k: '일시', v: '11월 28일(토) 오전 11:30', s: '오후 2시 30분 마무리' },
     { k: '장소', v: '탭샵바 청계천삼일빌딩점', s: '종로구 청계천로 85, 지하 1층' },
     { k: '회비', v: '1인 50,000원', s: '현금으로 준비해 주세요 (카드 결제 어려워요)' },
     { k: '테이블', v: '4인 1테이블', s: '와인 1병 · 맥주 4병 · 코스 7가지 · 커피' }
   ],
+  gallery: {
+    label: 'OUR WALKS · 올해 함께 걸은 길',
+    title: '함께 걸어온 한 해',
+    lead: '모임에서 보내 주신 사진이에요. 같이 걸은 길만큼, 이날 테이블에서도 이야기가 이어지길 바라요.',
+    items: [
+      { img: 'walk_2.jpg', wide: true, cap: '고궁 산책' },
+      { img: 'walk_5.jpg' },
+      { img: 'walk_6.jpg' },
+      { img: 'walk_1.jpg', cap: '가을 숲길' },
+      { img: 'walk_3.jpg', cap: '산책길 한옥 앞에서' },
+      { img: 'walk_4.jpg', wide: true, pos: '50% 100%' }
+    ]
+  },
   courseTitle: '이날은 이렇게<br>차려 드려요',
   courseLead: '4명이 한 테이블에 앉아 접시를 나눠 드시는 코스예요. 차가운 것부터 메인까지 시간에 맞춰 한 접시씩 나와요.',
   course: [
     { time: '11:30', en: 'WELCOME', ko: '도착 · 이름표 · 자리 안내', desc: '입구에서 이름표를 받으시면 테이블로 안내해 드려요. 처음 뵙는 분과도 자연스럽게 섞여 앉도록 자리를 준비할게요.' },
     { time: '11:45', en: 'FIRST PLATES', ko: '가볍게 시작해요', items: [
       { name: '하몽 멜론', en: 'Jamón with Melon', img: 'd_melon.jpg' },
-      { name: '닭가슴살 샐러드', en: 'Chicken Breast Salad', img: 'd_salad.jpg', tag: '건강 모임 추천' },
+      { name: '닭가슴살 샐러드', en: 'Chicken Breast Salad', img: 'd_salad.jpg', tag: '걷기 모임 추천' },
       { name: '트러플 프라이즈', en: 'Truffle Fries', img: 'd_fries.jpg' } ] },
     { time: '12:15', en: 'WARM PLATES', ko: '따뜻한 접시', items: [
       { name: '루꼴라 치즈 떡볶이', en: 'Arugula & Cheese Tteokbokki', img: 'd_tteok.jpg' },
@@ -56,7 +69,7 @@ window.EVENT = {
       { name: '항정살 구이', en: 'Grilled Pork Jowl', img: 'd_pork.jpg', tag: '청계 인기 1위' },
       { name: '이베리코 뼈등심 스테이크', en: 'Iberico Bone-in Pork Loin Steak', img: 'd_iberico.jpg' } ] },
     { time: '13:30', en: 'COFFEE', ko: '커피와 이야기', desc: '식사가 끝나면 한 분께 한 잔씩 아메리카노를 드려요.', items: [
-      { name: '아메리카노', en: 'wine is second americano', img: 'd_coffee.jpg' } ] },
+      { name: '아메리카노', en: '청계점 탭 아일랜드 옆에서 한 잔', img: 'd_cafe_cheonggye.jpg' } ] },
     { time: '14:30', en: 'CLOSING', ko: '단체 사진 · 마무리', desc: '원하시면 직원이 단체 사진을 찍어 드려요.' }
   ],
   courseFine: '메뉴는 당일 식재료 상황에 따라 비슷한 메뉴로 바뀔 수 있어요. 못 드시는 음식은 아래 등록에서 미리 알려 주세요.',
@@ -100,7 +113,7 @@ window.EVENT = {
     kakao: 'https://map.kakao.com/?q=%ED%83%AD%EC%83%B5%EB%B0%94%20%EC%B2%AD%EA%B3%84%EC%B2%9C%EC%82%BC%EC%9D%BC%EB%B9%8C%EB%94%A9%EC%A0%90',
     img: 'venue.jpg',
     tips: [
-      { t: '입구', d: '삼일빌딩 건물 밖 계단으로 바로 지하 1층에 내려오시면 돼요.' },
+      { t: '걸어서 오셔도 좋아요', d: '걷기 모임답게 청계천 산책로를 따라 오시면 매장 바로 앞이에요. 삼일빌딩 건물 밖 계단으로 지하 1층에 내려오시면 돼요.' },
       { t: '지하철을 추천해요', d: '와인이 함께하는 자리라 대중교통이 편해요. 차로 오시면 매장에 미리 알려 주세요.' },
       { t: '늦으실 때', d: '매장으로 전화 주시면 자리와 음식을 맞춰 둘게요. <a href="tel:050713314095">0507-1331-4095</a>' }
     ]
@@ -116,6 +129,6 @@ window.EVENT = {
   more: '연말 모임이나 대관을 생각하고 계신가요? <a href="https://tsb.wine/party/">탭샵바 대관 문의 →</a>'
 };
 </script>
-<script src="assets/event.js?v=2"></script>
+<script src="assets/event.js?v=4"></script>
 </body>
 </html>
