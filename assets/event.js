@@ -7,6 +7,7 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var img = function (f) { return /^(https?:)?\//.test(f) ? f : IMG + f; };
   var dots = '<span class="dots"><i></i><i></i><i></i></span>';
+  var wm = '<img class="wm" src="' + IMG + 'wordmark.png" alt="TAP SHOP BAR">'; // BI 워드마크
 
   var now = new Date(), deadline = new Date(E.deadlineISO), closed = now > deadline;
   var kst = function (d) { return Math.floor((d.getTime() + 9 * 36e5) / 864e5); };
@@ -16,7 +17,7 @@
 
   var html = '';
   // top bar
-  html += '<header class="top" id="top"><div class="wrap"><a class="brand" href="#">' + dots + '<b>TAP SHOP BAR</b><span>' + esc(E.venue.short) + '</span></a>' +
+  html += '<header class="top" id="top"><div class="wrap"><a class="brand" href="#">' + dots + wm + '<span>' + esc(E.venue.short) + '</span></a>' +
     (closed ? '' : '<a class="btn wine sm" href="#rsvp">참석 등록</a>') + '</div></header>';
 
   // hero
@@ -24,9 +25,9 @@
     '<div class="kicker">' + dots + '<span class="lbl">' + esc(E.kicker) + '</span></div>' +
     '<h1>' + E.titleHtml + '</h1>' +
     '<p class="lead">' + E.lead + '</p>' +
-    '<div class="when"><div><small>DATE</small><b>' + esc(E.dateText) + '</b></div><div><small>TIME</small><b>' + esc(E.timeText) + '</b></div><div><small>PLACE</small><b>' + esc(E.venue.name) + '</b></div></div>' +
+    (E.showWhen === false ? '' : '<div class="when"><div><small>DATE</small><b>' + esc(E.dateText) + '</b></div><div><small>TIME</small><b>' + esc(E.timeText) + '</b></div><div><small>PLACE</small><b>' + esc(E.venue.name) + '</b></div></div>') +
     (E.notice ? '<div class="notice"><span class="tag">안내</span><div>' + E.notice + '</div></div>' : '') +
-    '<div class="cta">' + (closed ? '' : '<a class="btn wine" href="#rsvp">참석 등록하기</a>') + '<a class="btn ghost" href="#course">오늘의 코스 보기</a>' +
+    '<div class="cta">' + (closed ? '' : '<a class="btn wine" href="#rsvp">참석 등록하기</a>') + '<a class="btn ghost" href="#course">코스 보기</a>' +
     '<span class="dday"><b>' + ddText + '</b>' + esc(E.deadlineText) + '까지 등록</span></div>' +
     '</div><div class="ph rv"><img src="' + img(E.heroImg) + '" alt="' + esc(E.heroAlt || '') + '" fetchpriority="high"><div class="stamp"><b>' + esc(E.stampTop || 'PRIVATE') + '</b>' + esc(E.stampSub || '') + '</div></div></div>' +
     '<div class="wrap"><div class="facts rv">' + E.facts.map(function (f) {
@@ -36,6 +37,10 @@
   // gallery (선택)
   if (E.gallery) html += '<section class="s gal-s"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.gallery.label) + '</span><h2>' + E.gallery.title + '</h2>' + (E.gallery.lead ? '<p>' + E.gallery.lead + '</p>' : '') + '</div><div class="gal">' +
     E.gallery.items.map(function (g) { return '<figure class="rv' + (g.wide ? ' wide' : '') + '"><img loading="lazy" src="' + img(g.img) + '" alt="' + esc(g.cap || '모임 사진') + '"' + (g.pos ? ' style="object-position:' + esc(g.pos) + '"' : '') + '>' + (g.cap ? '<figcaption>' + esc(g.cap) + '</figcaption>' : '') + '</figure>'; }).join('') + '</div></div></section>';
+
+  // video (선택) : E.video = { src, poster, label, title, lead, wide }
+  if (E.video && E.video.src) html += '<section class="s" id="film"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.video.label || 'TAP SHOP BAR FILM') + '</span><h2>' + (E.video.title || '탭샵바를 소개합니다') + '</h2>' + (E.video.lead ? '<p>' + E.video.lead + '</p>' : '') + '</div>' +
+    '<div class="vid rv' + (E.video.wide ? ' wide' : '') + '"><video src="' + esc(E.video.src) + '"' + (E.video.poster ? ' poster="' + esc(img(E.video.poster)) + '"' : '') + ' controls playsinline preload="metadata"></video></div></div></section>';
 
   // course
   html += '<section class="s paper" id="course"><div class="wrap"><div class="s-head rv"><span class="lbl">' + esc(E.courseLabel || 'THE COURSE') + '</span><h2>' + E.courseTitle + '</h2><p>' + E.courseLead + '</p></div><div class="course">' +
@@ -92,7 +97,7 @@
     E.notes.map(function (n, i) { return '<div class="note rv"><span class="n">' + (i + 1) + '</span><div><b>' + esc(n.t) + '</b><span>' + n.d + '</span></div></div>'; }).join('') + '</div></div></section>';
 
   // footer
-  html += '<footer><div class="wrap"><div class="f-top"><div><a class="brand" href="https://tsb.wine/">' + dots + '<b>TAP SHOP BAR</b></a><div class="slogan">wine is second americano</div></div>' +
+  html += '<footer><div class="wrap"><div class="f-top"><div><a class="brand" href="https://tsb.wine/">' + dots + wm + '</a><div class="slogan">wine is second americano</div></div>' +
     '<div class="call"><a class="btn light sm" href="tel:' + tel + '">' + esc(V.short) + ' ' + esc(V.phone) + '</a></div></div>' +
     (E.more ? '<p class="more">' + E.more + '</p>' : '') +
     '<div class="warn"><small>경고: 지나친 음주는 뇌졸중, 기억력 손상이나 치매를 유발합니다. 임신 중 음주는 기형아 출생 위험을 높입니다. 음주운전은 자신과 다른 사람의 생명을 위태롭게 할 수 있습니다.</small>' +
