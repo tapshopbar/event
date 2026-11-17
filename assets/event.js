@@ -1,6 +1,6 @@
 /* TAP SHOP BAR · 행사 안내 페이지 엔진. 각 행사 폴더의 index.html 안 window.EVENT 값을 읽어 화면을 그린다. */
 (function () {
-  var E = window.EVENT, IMG = '../assets/img/';
+  var E = window.EVENT, IMG = (document.currentScript && document.currentScript.src || '').replace(/[^\/]*$/, '') + 'img/';
   var API = 'https://script.google.com/macros/s/AKfycbxOZFtdBChQh5_eq9HWDV_SpgMqKOGTnOe4uoVSLc8VNM8wJd93jWZ-sGM5VPAZpAta/exec';
   var LINE = { '1': '#0052A4', '2': '#00A84D', '3': '#EF7C1C', '4': '#00A5DE', '5': '#996CAC', '6': '#CD7C2F', '7': '#747F00', '8': '#E6186C', '9': '#BDB092', '공항': '#0090D2' };
   var $ = function (s, r) { return (r || document).querySelector(s); };
