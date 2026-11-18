@@ -47,6 +47,7 @@ textarea{min-height:230px;resize:vertical;line-height:1.6}
 .toast.show{opacity:1}
 .step{display:inline-block;font-size:11px;font-weight:800;color:var(--blue);letter-spacing:.08em;margin-bottom:4px}
 .how{margin:0;padding-left:20px;color:#374151;font-size:14.5px;line-height:1.8}.how b{color:var(--blue)}
+.agree{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:#374151;margin-top:14px;line-height:1.5}.agree input{width:18px;height:18px;margin-top:2px;flex:none}
 .tone{display:flex;gap:8px}.tone .chip{flex:1;text-align:center}
 </style>
 </head>
@@ -113,10 +114,18 @@ textarea{min-height:230px;resize:vertical;line-height:1.6}
       <li>사진도 한 장 넣어 주시면 최고예요</li>
       <li>오른쪽 아래 <b>게시</b></li>
     </ol>
+    <label class="agree"><input type="checkbox" id="quote"> 탭샵바 홈페이지·SNS에 이름 없이 소개해도 좋아요 (선택)</label>
+    <button class="btn ghost" id="onlyUs" style="margin-top:12px">구글은 어려워요 · 탭샵바에만 남길게요</button>
+    <p class="hint" style="margin:10px 0 0">버튼을 누르면 이 후기가 탭샵바에도 전해져요. 이름·연락처는 받지 않아요.</p>
+  </div>
+  <div class="card hidden" id="thanks" style="text-align:center;padding:28px 16px">
+    <div class="dots" style="justify-content:center;margin-bottom:12px"><i></i><i></i><i></i></div>
+    <p class="q" style="font-size:19px">고맙습니다!</p>
+    <p class="hint" style="margin:0">남겨 주신 후기는 매장 팀에 잘 전할게요.<br>다음에 또 뵈어요.</p>
   </div>
 
   <p class="note">
-    · 후기는 손님 본인의 구글 계정으로, 손님이 직접 올립니다. 탭샵바는 입력하신 내용을 저장하지 않아요(이 화면 안에서만 만들어져요).<br>
+    · 구글 후기는 손님 본인의 구글 계정으로, 손님이 직접 올립니다. 버튼을 누르시면 같은 글이 탭샵바에도 전해져 매장 팀이 읽어요(이름·연락처는 받지 않아요).<br>
     · 좋았던 점도 아쉬웠던 점도 느끼신 그대로 남겨 주세요. 후기 작성에 따른 할인·서비스 혜택은 없습니다.<br>
     · 구글 로그인 화면이 나오면 평소 쓰시는 구글(Gmail) 계정으로 로그인하시면 돼요.
   </p>
@@ -133,6 +142,9 @@ const BRANCHES = {
 };
 /* 나중에 진짜 AI(예: Apps Script + Gemini 무료 구간)를 붙이면 여기 주소만 넣으면 됨. 비어 있으면 화면 안에서 문장 조합. */
 const AI_ENDPOINT = '';
+/* 후기 받는 곳: 시트 '탭샵바_행사안내페이지_손님응답' > '후기' 탭 (Apps Script type=review). 같은 손님은 rid로 한 줄만. */
+const SAVE_API = 'https://script.google.com/macros/s/AKfycbxOZFtdBChQh5_eq9HWDV_SpgMqKOGTnOe4uoVSLc8VNM8wJd93jWZ-sGM5VPAZpAta/exec';
+const RID = 'R' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
 const OCC = ['회사 회식','송년회','동창 모임','동호회','생일 파티','웨딩 애프터파티','세미나·워크숍'];
 const LIKES = [
@@ -249,13 +261,27 @@ $('gen').onclick=gen; $('again').onclick=gen;
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 async function copy(){
   const v=$('text').value;
-  try{ await navigator.clipboard.writeText(v); }
-  catch(e){ const ta=$('text'); ta.select(); document.execCommand('copy'); }
+  try{ await Promise.race([navigator.clipboard.writeText(v), new Promise((_,r)=>setTimeout(()=>r(new Error('t')),1200))]); }
+  catch(e){ const ta=$('text'); ta.select(); try{document.execCommand('copy');}catch(_){} }
 }
 $('copy').onclick=async()=>{await copy();toast('복사했어요');};
 
+function save(action){
+  const LB = Object.fromEntries(LIKES);
+  const body = new URLSearchParams({ type:'review', rid:RID, branch:sel.value, occ:on($('occ'))[0]||'',
+    likes:on($('likes')).map(k=>LB[k]||k).join(', '), tone:(Object.fromEntries(TONES)[on($('tone'))[0]]||''), text:$('text').value,
+    cons:$('cons').value, action, quote:$('quote').checked?'1':'' });
+  /* 쿠키 없이 보낸다: 구글 여러 계정 로그인 상태면 Apps Script가 쿠키 붙은 요청을 거부함(sendBeacon 안 됨) */
+  fetch(SAVE_API,{method:'POST',body,mode:'no-cors',credentials:'omit',keepalive:true}).catch(()=>{});
+}
+$('onlyUs').onclick=()=>{
+  if (!$('text').value.trim()) return toast('후기 글을 먼저 만들어 주세요');
+  save('only');
+  $('out').classList.add('hidden'); $('postCard').classList.add('hidden'); $('thanks').classList.remove('hidden');
+  $('thanks').scrollIntoView({behavior:'smooth',block:'center'});
+};
 document.querySelectorAll('[data-go]').forEach(btn=>btn.onclick=async()=>{
-  const b = BRANCHES[sel.value]; await copy();
+  const b = BRANCHES[sel.value]; save('google'); await copy();
   const go = btn.dataset.go; let url;
   if (go==='google') url='https://search.google.com/local/writereview?placeid='+b.google;
   if (go==='naver')  url='https://m.place.naver.com/restaurant/'+b.naver+'/review/visitor';
