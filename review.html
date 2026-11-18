@@ -50,257 +50,293 @@ textarea{min-height:230px;resize:vertical;line-height:1.6}
 .how{margin:0;padding-left:20px;color:#374151;font-size:14.5px;line-height:1.8}.how b{color:var(--blue)}
 .agree{display:flex;gap:8px;align-items:flex-start;font-size:14px;color:#374151;margin-top:14px;line-height:1.5}.agree input{width:18px;height:18px;margin-top:2px;flex:none}
 .tone{display:flex;gap:8px}.tone .chip{flex:1;text-align:center}
+.brand{justify-content:flex-start}.brand .lang{margin-left:auto;border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit}
+.langnote{font-size:12.5px;color:var(--blue);font-weight:600;margin:-8px 4px 14px}
+.kobox{margin-top:12px;background:#F7F8FA;border:1.5px dashed var(--line);border-radius:12px;padding:12px}
+.kobox .lbl{font-size:12px;font-weight:700;color:var(--sub);margin-bottom:6px;display:flex;justify-content:space-between}
+.kobox textarea{min-height:150px;background:#fff}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><div class="dots"><i></i><i></i><i></i></div><b>TAP SHOP BAR</b></div>
-  <h1>오늘 어떠셨어요?<br>30초면 후기 끝나요</h1>
-  <p class="lead">단어 몇 개만 고르시면 문장은 저희가 다듬어 드려요. 마음에 들게 고친 뒤 구글 지도에 직접 올려 주세요.</p>
+  <div class="brand"><div class="dots"><i></i><i></i><i></i></div><b>TAP SHOP BAR</b><button class="lang" id="langBtn" type="button"></button></div>
+  <h1 data-t="h1"></h1>
+  <p class="lead" data-t="lead"></p>
+  <p class="langnote hidden" id="langNote"></p>
 
+  <div class="card"><span class="step">STEP 1</span><p class="q" data-t="q1"></p><select id="branch"></select></div>
+  <div class="card"><span class="step">STEP 2</span><p class="q" data-t="q2"></p><p class="hint" data-t="h2"></p><div class="chips" id="occ"></div></div>
+  <div class="card"><span class="step">STEP 3</span><p class="q" data-t="q3"></p><p class="hint" data-t="h3"></p><div class="chips" id="likes"></div></div>
   <div class="card">
-    <span class="step">STEP 1</span>
-    <p class="q">어느 지점이었나요?</p>
-    <select id="branch"></select>
+    <p class="q" data-t="qFree"></p><p class="hint" data-t="hFree"></p>
+    <input type="text" id="free" maxlength="150">
+    <p class="q" style="margin-top:16px" data-t="qCons"></p><p class="hint" data-t="hCons"></p>
+    <input type="text" id="cons" maxlength="150">
   </div>
-
   <div class="card">
-    <span class="step">STEP 2</span>
-    <p class="q">어떤 자리였나요?</p>
-    <p class="hint">하나만 골라 주세요 (선택)</p>
-    <div class="chips" id="occ"></div>
-  </div>
-
-  <div class="card">
-    <span class="step">STEP 3</span>
-    <p class="q">기억에 남는 걸 골라 주세요</p>
-    <p class="hint">여러 개 골라도 돼요</p>
-    <div class="chips" id="likes"></div>
-  </div>
-
-  <div class="card">
-    <p class="q">직접 한마디 (선택)</p>
-    <p class="hint">예: 팀장님이 와인 고르는 거 재밌어하심</p>
-    <input type="text" id="free" maxlength="120" placeholder="자유롭게 적어 주세요">
-    <p class="q" style="margin-top:16px">아쉬웠던 점 (선택)</p>
-    <p class="hint">솔직한 한 줄이 오히려 믿음을 줘요</p>
-    <input type="text" id="cons" maxlength="120" placeholder="예: 주차가 조금 불편했어요">
-  </div>
-
-  <div class="card">
-    <p class="q">말투</p>
+    <p class="q" data-t="qTone"></p>
     <div class="tone chips" id="tone"></div>
     <div style="height:14px"></div>
-    <button class="btn primary" id="gen">✍️ 후기 써 줘</button>
+    <button class="btn primary" id="gen" data-t="gen"></button>
   </div>
 
   <div class="card hidden" id="out">
     <span class="step">STEP 4</span>
-    <p class="q">이렇게 써 봤어요. 마음대로 고쳐 주세요</p>
+    <p class="q" data-t="q4"></p>
     <textarea id="text"></textarea>
+    <div class="kobox hidden" id="koBox"><div class="lbl"><span data-t="koLbl"></span><span id="koState"></span></div><textarea id="ko"></textarea></div>
     <div class="row" style="margin-top:8px">
-      <button class="btn ghost" id="again">↻ 다르게 써 줘</button>
-      <button class="btn ghost" id="copy">복사</button>
+      <button class="btn ghost" id="again" data-t="again"></button>
+      <button class="btn ghost" id="copy" data-t="copy"></button>
     </div>
   </div>
 
   <div class="card hidden" id="postCard">
     <span class="step">STEP 5</span>
-    <p class="q">구글 지도에 올리기</p>
-    <button class="btn primary" data-go="google" style="margin:8px 0 14px"><span class="badge g" style="background:#fff;color:#4285F4">G</span>복사하고 구글에 올리기</button>
-    <ol class="how">
-      <li>위 버튼을 누르면 글이 복사되고 구글 리뷰 창이 열려요</li>
-      <li>별점을 눌러 주세요</li>
-      <li>글칸을 길게 눌러 <b>붙여넣기</b></li>
-      <li>사진도 한 장 넣어 주시면 최고예요</li>
-      <li>오른쪽 아래 <b>게시</b></li>
-    </ol>
-    <label class="agree"><input type="checkbox" id="quote"> 탭샵바 홈페이지·SNS에 이름 없이 소개해도 좋아요 (선택)</label>
-    <button class="btn ghost" id="onlyUs" style="margin-top:12px">구글은 어려워요 · 탭샵바에만 남길게요</button>
-    <p class="hint" style="margin:10px 0 0">버튼을 누르면 이 후기가 탭샵바에도 전해져요. 이름·연락처는 받지 않아요.</p>
+    <p class="q" data-t="q5"></p>
+    <button class="btn primary" data-go="google" style="margin:8px 0 14px"><span class="badge g" style="background:#fff;color:#4285F4">G</span><span data-t="goBtn"></span></button>
+    <ol class="how" id="how"></ol>
+    <label class="agree"><input type="checkbox" id="quote"> <span data-t="agree"></span></label>
+    <button class="btn ghost" id="onlyUs" style="margin-top:12px" data-t="onlyUs"></button>
+    <p class="hint" style="margin:10px 0 0" data-t="sendHint"></p>
   </div>
   <div class="card hidden" id="thanks" style="text-align:center;padding:28px 16px">
     <div class="dots" style="justify-content:center;margin-bottom:12px"><i></i><i></i><i></i></div>
-    <p class="q" style="font-size:19px">고맙습니다!</p>
-    <p class="hint" style="margin:0">남겨 주신 후기는 매장 팀에 잘 전할게요.<br>다음에 또 뵈어요.</p>
+    <p class="q" style="font-size:19px" data-t="thx1"></p>
+    <p class="hint" style="margin:0" data-t="thx2"></p>
   </div>
-
-  <p class="note">
-    · 구글 후기는 손님 본인의 구글 계정으로, 손님이 직접 올립니다. 버튼을 누르시면 같은 글이 탭샵바에도 전해져 매장 팀이 읽어요(이름·연락처는 받지 않아요).<br>
-    · 좋았던 점도 아쉬웠던 점도 느끼신 그대로 남겨 주세요. 후기 작성에 따른 할인·서비스 혜택은 없습니다.<br>
-    · 구글 로그인 화면이 나오면 평소 쓰시는 구글(Gmail) 계정으로 로그인하시면 돼요.
-  </p>
+  <p class="note" data-t="note"></p>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== 지점 설정 (QR마다 ?s=cheonggye 처럼 지점 고정) ===== */
+/* ===== 지점 (QR마다 ?s=cheonggye 처럼 고정) ===== */
 const BRANCHES = {
-  cheonggye: {name:'탭샵바 청계천삼일빌딩점', short:'청계점', naver:'1619947949', google:'ChIJ0Ros8iCjfDURwRv5NNnzdWU', loc:'종각역에서 가까워서'},
-  sangam:    {name:'탭샵바 상암MBC점',       short:'상암점', naver:'2082658511', google:'ChIJmYNiFwCZfDURSdkB04auPnA', loc:'MBC 건물 안이라 찾기 쉬워서'},
-  magok:     {name:'탭샵바 마곡점',          short:'마곡점', naver:'2090093840', google:'ChIJJeTFltOdfDURXVSRH2G8-d0', loc:'마곡역에서 가까워서'},
-  dongdaemun:{name:'탭샵바 동대문두타점',    short:'동대문점', naver:'1784099751', google:'ChIJ64lRE5KjfDURStbDId_7-eA', loc:'두타 건물이라 찾기 쉬워서'}
+  cheonggye: {name:'탭샵바 청계천삼일빌딩점', en:'TAP SHOP BAR Cheonggye (Samil Bldg.)', short:'청계점', google:'ChIJ0Ros8iCjfDURwRv5NNnzdWU', loc:'종각역에서 가까워서'},
+  sangam:    {name:'탭샵바 상암MBC점',       en:'TAP SHOP BAR Sangam MBC',            short:'상암점', google:'ChIJmYNiFwCZfDURSdkB04auPnA', loc:'MBC 건물 안이라 찾기 쉬워서'},
+  magok:     {name:'탭샵바 마곡점',          en:'TAP SHOP BAR Magok',                 short:'마곡점', google:'ChIJJeTFltOdfDURXVSRH2G8-d0', loc:'마곡역에서 가까워서'},
+  dongdaemun:{name:'탭샵바 동대문두타점',    en:'TAP SHOP BAR Dongdaemun (Doota)',    short:'동대문점', google:'ChIJ64lRE5KjfDURStbDId_7-eA', loc:'두타 건물이라 찾기 쉬워서'}
 };
-/* 나중에 진짜 AI(예: Apps Script + Gemini 무료 구간)를 붙이면 여기 주소만 넣으면 됨. 비어 있으면 화면 안에서 문장 조합. */
-/* 후기 받는 곳: 시트 '탭샵바_행사안내페이지_손님응답' > '후기' 탭 (Apps Script type=review). 같은 손님은 rid로 한 줄만. */
+/* 후기 받는 곳·초안 쓰기: 같은 Apps Script 웹 앱 (type=review / write / translate) */
 const SAVE_API = 'https://script.google.com/macros/s/AKfycbxOZFtdBChQh5_eq9HWDV_SpgMqKOGTnOe4uoVSLc8VNM8wJd93jWZ-sGM5VPAZpAta/exec';
 let lastGen = '';
 const RID = 'R' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
-const OCC = ['회사 회식','송년회','동창 모임','동호회','생일 파티','웨딩 애프터파티','세미나·워크숍'];
-const LIKES = [
-  ['p50','1인 5만원 구성'],['wine','와인'],['beer','맥주'],['food','식사'],['coffee','커피'],
-  ['value','가성비'],['mood','분위기'],['space','넓은 공간'],['staff','직원 친절'],['smooth','진행이 매끄러움'],['loc','찾아오기 쉬움'],['photo','사진 잘 나옴']
-];
-const TONES = [['plain','담백하게'],['fun','신나게'],['short','짧게']];
+/* ===== 화면 글자 (ko 기본 · en · ja · zh, 그 밖의 언어는 화면은 영어, 후기는 그 언어로) ===== */
+const OCC_K = ['corp','yearend','alumni','club','bday','wedding','seminar'];
+const LIKE_K = ['p50','wine','beer','food','coffee','value','mood','space','staff','smooth','loc','photo'];
+const TONE_K = ['plain','fun','short'];
+const I18N = {
+ ko:{ h1:'오늘 어떠셨어요?<br>30초면 후기 끝나요', lead:'단어 몇 개만 고르시면 문장은 저희가 다듬어 드려요. 마음에 들게 고친 뒤 구글 지도에 직접 올려 주세요.',
+  q1:'어느 지점이었나요?', q2:'어떤 자리였나요?', h2:'하나만 골라 주세요 (선택)', q3:'기억에 남는 걸 골라 주세요', h3:'여러 개 골라도 돼요',
+  qFree:'직접 한마디 (선택)', hFree:'예: 팀장님이 와인 고르는 거 재밌어하심', pFree:'자유롭게 적어 주세요',
+  qCons:'아쉬웠던 점 (선택)', hCons:'솔직한 한 줄이 오히려 믿음을 줘요', pCons:'예: 주차가 조금 불편했어요',
+  qTone:'말투', gen:'✍️ 후기 써 줘', writing:'✍️ 쓰는 중…', q4:'이렇게 써 봤어요. 마음대로 고쳐 주세요', again:'↻ 다르게 써 줘', copy:'복사', koLbl:'한국어 번역', 
+  q5:'구글 지도에 올리기', goBtn:'복사하고 구글에 올리기',
+  how:['위 버튼을 누르면 글이 복사되고 구글 리뷰 창이 열려요','별점을 눌러 주세요','글칸을 길게 눌러 <b>붙여넣기</b>','사진도 한 장 넣어 주시면 최고예요','오른쪽 아래 <b>게시</b>'],
+  agree:'탭샵바 홈페이지·SNS에 이름 없이 소개해도 좋아요 (선택)', onlyUs:'구글은 어려워요 · 탭샵바에만 남길게요', sendHint:'버튼을 누르면 이 후기가 탭샵바에도 전해져요. 이름·연락처는 받지 않아요.',
+  thx1:'고맙습니다!', thx2:'남겨 주신 후기는 매장 팀에 잘 전할게요.<br>다음에 또 뵈어요.',
+  note:'· 구글 후기는 손님 본인의 구글 계정으로, 손님이 직접 올립니다. 버튼을 누르시면 같은 글이 탭샵바에도 전해져 매장 팀이 읽어요(이름·연락처는 받지 않아요).<br>· 좋았던 점도 아쉬웠던 점도 느끼신 그대로 남겨 주세요. 후기 작성에 따른 할인·서비스 혜택은 없습니다.<br>· 구글 로그인 화면이 나오면 평소 쓰시는 구글(Gmail) 계정으로 로그인하시면 돼요.',
+  tCopied:'복사했어요', tNeed:'후기 글을 먼저 만들어 주세요', tGo:'복사 완료! 별점 → 글칸 길게 눌러 붙여넣기', langNote:'',
+  occ:['회사 회식','송년회','동창 모임','동호회','생일 파티','웨딩 애프터파티','세미나·워크숍'],
+  likes:['1인 5만원 구성','와인','맥주','식사','커피','가성비','분위기','넓은 공간','직원 친절','진행이 매끄러움','찾아오기 쉬움','사진 잘 나옴'],
+  tone:['담백하게','신나게','짧게'] },
+ en:{ h1:'How was it today?<br>Your review in 30 seconds', lead:'Tap a few words and we\'ll draft it for you. Edit it however you like, then post it to Google Maps yourself.',
+  q1:'Which branch?', q2:'What was the occasion?', h2:'Pick one (optional)', q3:'What did you enjoy?', h3:'Pick as many as you like',
+  qFree:'In your own words (optional)', hFree:'e.g. We loved pouring wine straight from the taps', pFree:'Anything you\'d like to say',
+  qCons:'Anything that could be better? (optional)', hCons:'One honest line makes a review more trustworthy', pCons:'e.g. Parking was a bit tricky',
+  qTone:'Tone', gen:'✍️ Write it for me', writing:'✍️ Writing…', q4:'Here\'s a draft. Edit freely', again:'↻ Try another', copy:'Copy', koLbl:'Korean translation · copied together',
+  q5:'Post to Google Maps', goBtn:'Copy & open Google review',
+  how:['Tap the button: your review is copied and Google\'s review window opens','Tap the stars','Long-press the text box and <b>Paste</b>','A photo makes it even better','Tap <b>Post</b>'],
+  agree:'OK to feature this on TAP SHOP BAR\'s website/social, without my name (optional)', onlyUs:'Skip Google · just send it to TAP SHOP BAR', sendHint:'Your review is also shared with TAP SHOP BAR. We don\'t collect your name or contact.',
+  thx1:'Thank you!', thx2:'We\'ll pass your review on to the team.<br>Hope to see you again.',
+  note:'· You post the Google review yourself, from your own Google account. The same text is also shared with our team (no name or contact collected).<br>· Please write honestly, good or bad. There are no discounts or perks for writing a review.<br>· If Google asks you to sign in, use your usual Google (Gmail) account.',
+  tCopied:'Copied', tNeed:'Please write your review first', tGo:'Copied! Tap the stars, then long-press to paste', langNote:'Writing in {L} · a Korean translation is added below',
+  occ:['Company dinner','Year-end party','Reunion','Club meetup','Birthday','Wedding after-party','Seminar / workshop'],
+  likes:['₩50,000 all-in (wine, beer, food, coffee)','Wine','Beer','Food','Coffee','Great value','Atmosphere','Spacious','Friendly staff','Smoothly run','Easy to find','Great for photos'],
+  tone:['Simple','Excited','Short'] },
+ ja:{ h1:'今日はいかがでしたか?<br>30秒でレビュー完成', lead:'言葉をいくつか選ぶだけで文章を作ります。自由に直してから、ご自身でGoogleマップに投稿してください。',
+  q1:'どの店舗でしたか?', q2:'どんな集まりでしたか?', h2:'1つ選んでください(任意)', q3:'よかったものを選んでください', h3:'いくつでも選べます',
+  qFree:'ひとこと(任意)', hFree:'例: タップからワインを注ぐのが楽しかった', pFree:'ご自由にどうぞ',
+  qCons:'残念だった点(任意)', hCons:'正直なひとことが信頼につながります', pCons:'例: 駐車が少し不便でした',
+  qTone:'トーン', gen:'✍️ 書いてもらう', writing:'✍️ 作成中…', q4:'下書きです。自由に直してください', again:'↻ 別の文で', copy:'コピー', koLbl:'韓国語訳 · 一緒にコピーされます',
+  q5:'Googleマップに投稿', goBtn:'コピーしてGoogleレビューを開く',
+  how:['ボタンを押すと文章がコピーされ、Googleのレビュー画面が開きます','星をタップ','入力欄を長押しして<b>ペースト</b>','写真もあると最高です','<b>投稿</b>をタップ'],
+  agree:'名前なしでTAP SHOP BARのサイト・SNSで紹介してもOK(任意)', onlyUs:'Googleは難しい · TAP SHOP BARにだけ送る', sendHint:'このレビューはTAP SHOP BARにも届きます。お名前・連絡先はいただきません。',
+  thx1:'ありがとうございます!', thx2:'いただいたレビューは店舗スタッフに伝えます。<br>またのお越しをお待ちしています。',
+  note:'· Googleレビューはご本人のGoogleアカウントで、ご自身で投稿します。同じ文章がTAP SHOP BARにも届きます(お名前・連絡先はいただきません)。<br>· 良かった点も残念な点も、感じたままにどうぞ。レビューによる割引・特典はありません。<br>· Googleのログイン画面が出たら、普段お使いのGoogleアカウントでログインしてください。',
+  tCopied:'コピーしました', tNeed:'先にレビューを作ってください', tGo:'コピー完了! 星 → 長押しでペースト', langNote:'{L}で作成 · 下に韓国語訳が付きます',
+  occ:['会社の会食','忘年会','同窓会','サークル','誕生日','ウェディング二次会','セミナー・ワークショップ'],
+  likes:['1人5万ウォン(ワイン・ビール・食事・コーヒー込み)','ワイン','ビール','食事','コーヒー','コスパ','雰囲気','広い空間','親切なスタッフ','進行がスムーズ','行きやすい','写真映え'],
+  tone:['落ち着いて','元気に','短く'] },
+ zh:{ h1:'今天感觉如何?<br>30秒写好评价', lead:'选几个词，我们帮你写好草稿。随意修改后，由你亲自发布到谷歌地图。',
+  q1:'哪家门店?', q2:'是什么聚会?', h2:'选一个(可选)', q3:'哪些让你印象深刻?', h3:'可多选',
+  qFree:'说一句(可选)', hFree:'例如: 大家很喜欢从酒头直接接葡萄酒', pFree:'随便写',
+  qCons:'不足之处(可选)', hCons:'真实的一句话更可信', pCons:'例如: 停车有点不方便',
+  qTone:'语气', gen:'✍️ 帮我写', writing:'✍️ 正在写…', q4:'草稿如下，可随意修改', again:'↻ 换一个', copy:'复制', koLbl:'韩语翻译 · 会一起复制',
+  q5:'发布到谷歌地图', goBtn:'复制并打开谷歌评价',
+  how:['点按钮后会复制评价并打开谷歌评价窗口','点选星级','长按输入框并<b>粘贴</b>','加一张照片就更好了','点<b>发布</b>'],
+  agree:'同意 TAP SHOP BAR 在官网/社交媒体匿名展示(可选)', onlyUs:'不发谷歌 · 只发给 TAP SHOP BAR', sendHint:'这条评价也会发给 TAP SHOP BAR。我们不收集姓名或联系方式。',
+  thx1:'谢谢!', thx2:'我们会把你的评价转达给门店团队。<br>期待再次见到你。',
+  note:'· 谷歌评价由你用自己的谷歌账号亲自发布。同样的内容也会发给 TAP SHOP BAR(不收集姓名或联系方式)。<br>· 好的、不好的都请如实写。写评价没有折扣或赠品。<br>· 如果出现谷歌登录页面，请用你常用的谷歌账号登录。',
+  tCopied:'已复制', tNeed:'请先生成评价', tGo:'已复制! 点星级 → 长按粘贴', langNote:'用{L}撰写 · 下方附韩语翻译',
+  occ:['公司聚餐','年终聚会','同学聚会','社团聚会','生日派对','婚礼after party','研讨会/工作坊'],
+  likes:['每人5万韩元(含葡萄酒、啤酒、餐食、咖啡)','葡萄酒','啤酒','餐食','咖啡','性价比高','氛围','空间宽敞','员工亲切','流程顺畅','交通方便','适合拍照'],
+  tone:['平实','热情','简短'] }
+};
 
-const F = {
-  p50:[ '요즘 물가에 1인 5만원으로 와인, 맥주, 식사, 커피까지 다 되는 곳은 처음 봤어요.',
-        '5만원에 와인·맥주·식사·커피가 전부 들어 있어서 다들 놀랐어요.',
-        '1인 5만원 안에 와인부터 커피까지 다 포함이라 총무 입장에서 정산이 정말 편했어요.' ],
-  wine:[ '와인 종류가 생각보다 많았고, 탭에서 바로 따라 줘서 그런지 맛이 깔끔했어요.',
-         '와인 좋아하는 사람들은 이것저것 골라 마시는 재미가 있었다고 해요.',
-         '와인이 기대 이상이었어요. 잘 모르는 사람도 마시기 편한 걸로 잘 맞춰 주셨고요.' ],
-  beer:[ '와인 안 마시는 사람은 맥주로 가면 돼서 술 취향이 갈려도 문제없었어요.',
-         '맥주도 같이 나와서 다들 각자 편한 걸로 마셨어요.' ],
-  food:[ '음식이 안주 수준이 아니라 한 끼 식사로 충분했어요.',
-         '음식이 넉넉하게 나와서 다들 배부르게 먹었어요.',
-         '음식 맛이 좋아서 술 안 마시는 분들도 만족했어요.' ],
-  coffee:[ '마지막에 커피까지 나와서 깔끔하게 마무리했어요.',
-           '끝나고 커피까지 챙겨 주는 대관은 처음이었어요.' ],
-  value:[ '가격 생각하면 정말 남는 장사였어요.', '가성비로는 따라올 데가 없을 것 같아요.' ],
-  mood:[ '시끄럽지 않아서 대화하기 좋았어요.', '공간 분위기가 좋아서 다들 오래 머물고 싶어 했어요.' ],
-  space:[ '인원이 많았는데도 자리가 넉넉했어요.', '공간이 넓어서 단체로 써도 답답하지 않았어요.' ],
-  staff:[ '직원분들이 테이블마다 세심하게 챙겨 주셨어요.', '직원분들이 친절해서 처음부터 끝까지 편했어요.' ],
-  smooth:[ '진행이 매끄러워서 준비한 사람 입장에서 마음이 놓였어요.', '세팅부터 마무리까지 알아서 해 주셔서 신경 쓸 게 없었어요.' ],
-  photo:[ '조명이 예뻐서 단체 사진이 잘 나왔어요.', '사진 찍기 좋은 곳이 많아서 다들 한 장씩 남겼어요.' ]
-};
-const OPEN = {
-  plain:[ o=>`${o}로 {b}에 다녀왔어요.`, o=>`${o} 자리로 {b}을 이용했어요.` ],
-  fun:[ o=>`${o}로 {b} 다녀왔는데 대만족이에요!`, o=>`${o} 장소 고민하다 {b}으로 갔는데 완전 잘 골랐어요!` ],
-  short:[ o=>`${o}로 {b} 다녀왔어요.` ]
-};
-const OPEN_NO = { plain:['{b}에서 모임을 했어요.'], fun:['{b}에서 모임 했는데 대만족이에요!'], short:['{b} 다녀왔어요.'] };
-const CLOSE = {
-  plain:[ '다음 모임도 여기로 하려고요.', '단체 모임 장소 찾는 분들께 추천해요.', '다음에도 또 오고 싶어요.' ],
-  fun:[ '다음 모임도 무조건 여기예요!', '단체 모임 고민되면 여기 강추합니다!!', '다들 다음에 또 오자고 난리였어요 ㅎㅎ' ],
-  short:[ '추천해요.', '또 올게요.' ]
-};
+/* ===== 언어: 폰 언어 자동 인식, 기본 한국어, 위 토글로 전환 ===== */
+const PHONE = new URLSearchParams(location.search).get('lang') || ((navigator.languages && navigator.languages[0]) || navigator.language || 'ko');   // ?lang=fr 로 시험 가능
+let cur = /^ko/i.test(PHONE) ? 'ko' : PHONE;           // 후기 언어 (BCP47)
+let alt = cur === 'ko' ? 'en' : 'ko';                  // 토글 반대편
+const uiOf = l => /^ko/i.test(l) ? 'ko' : /^ja/i.test(l) ? 'ja' : /^zh/i.test(l) ? 'zh' : 'en';
+const nativeName = l => { try { const n = new Intl.DisplayNames([l], {type:'language'}).of(l.split('-')[0]); return n.charAt(0).toUpperCase()+n.slice(1); } catch(e){ return l; } };
+const enName = l => { try { return new Intl.DisplayNames(['en'], {type:'language'}).of(l); } catch(e){ return l; } };
+const isForeign = () => !/^ko/i.test(cur);
+let T = I18N[uiOf(cur)];
 
 const $ = id=>document.getElementById(id);
 const pick = a=>a[Math.floor(Math.random()*a.length)];
 const shuffle = a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
 const josa = (w,a,b)=>{const c=w.charCodeAt(w.length-1);return (c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28)?a:b;};
-
-/* 화면 그리기 */
 const params = new URLSearchParams(location.search);
 const sel = $('branch');
-Object.entries(BRANCHES).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v.name;sel.appendChild(o);});
-if (BRANCHES[params.get('s')]) sel.value = params.get('s');
+const state = { occ: null, likes: new Set(), tone: 'plain' };
 
-function chips(el, items, multi){
-  items.forEach(it=>{
-    const [k,label] = Array.isArray(it)?it:[it,it];
-    const c=document.createElement('span');c.className='chip';c.textContent=label;c.dataset.k=k;
-    c.onclick=()=>{ if(!multi){ [...el.children].forEach(x=>x!==c&&x.classList.remove('on')); } if(el.id==='tone') c.classList.add('on'); else c.classList.toggle('on'); };
+function chips(el, keys, labels, kind){
+  el.innerHTML='';
+  keys.forEach((k,i)=>{
+    const c=document.createElement('span');c.className='chip';c.textContent=labels[i];c.dataset.k=k;
+    const isOn = kind==='likes' ? state.likes.has(k) : state[kind]===k;
+    if (isOn) c.classList.add('on');
+    c.onclick=()=>{
+      if (kind==='likes'){ state.likes.has(k)?state.likes.delete(k):state.likes.add(k); }
+      else if (kind==='occ'){ state.occ = state.occ===k ? null : k; }
+      else state.tone = k;
+      render();
+    };
     el.appendChild(c);
   });
 }
-chips($('occ'),OCC,false); chips($('likes'),LIKES,true); chips($('tone'),TONES,false);
-$('tone').children[0].classList.add('on');
-const on = el=>[...el.querySelectorAll('.chip.on')].map(c=>c.dataset.k);
+function render(){
+  T = I18N[uiOf(cur)];
+  document.documentElement.lang = uiOf(cur);
+  document.querySelectorAll('[data-t]').forEach(el=>{ const v=T[el.dataset.t]; if (typeof v==='string') el.innerHTML=v; });
+  $('free').placeholder=T.pFree; $('cons').placeholder=T.pCons;
+  $('how').innerHTML = T.how.map(x=>'<li>'+x+'</li>').join('');
+  $('langBtn').textContent = nativeName(alt);
+  $('langNote').textContent = isForeign() ? T.langNote.replace('{L}', nativeName(cur)) : '';
+  $('langNote').classList.toggle('hidden', !isForeign());
+  $('koBox').classList.toggle('hidden', !isForeign() || !$('text').value);
+  const v = sel.value || params.get('s');
+  sel.innerHTML=''; Object.entries(BRANCHES).forEach(([k,b])=>{const o=document.createElement('option');o.value=k;o.textContent=uiOf(cur)==='ko'?b.name:b.en;sel.appendChild(o);});
+  if (BRANCHES[v]) sel.value = v;
+  chips($('occ'),OCC_K,T.occ,'occ'); chips($('likes'),LIKE_K,T.likes,'likes'); chips($('tone'),TONE_K,T.tone,'tone');
+}
+$('langBtn').onclick=()=>{ [cur,alt]=[alt,cur]; render(); };
 
-function compose(){
-  const b = BRANCHES[sel.value];
-  const occ = on($('occ'))[0];
-  const tone = on($('tone'))[0] || 'plain';
-  let likes = on($('likes'));
-  const free = $('free').value.trim();
-  const cons = $('cons').value.trim();
-  const bname = b.short;
-    let first = occ ? pick(OPEN[tone])(occ) : pick(OPEN_NO[tone]);
-  first = first.replace('{b}에', bname+'에').replace('{b}을', bname+josa(bname,'을','를')).replace('{b}으로', bname+josa(bname,'으로','로')).replace('{b}', bname);
-  if (occ) first = first.replace(occ+'로', occ+josa(occ,'으로','로')).replace(occ+'으로으로', occ+'으로');
-  // 5만원 문장은 앞쪽에, 나머지는 섞기
-  const head = likes.includes('p50') ? ['p50'] : [];
-  let rest = shuffle(likes.filter(k=>k!=='p50'));
-  rest = rest.slice(0, tone==='short' ? (head.length?1:2) : (head.length?4:5));
-  const lines = [first];
-  [...head,...rest].forEach(k=>{
-    if (k==='loc') lines.push(`${b.loc} 다들 찾아오기 편했어요.`);
-    else if (F[k]) lines.push(pick(F[k]));
-  });
-  if (!likes.length && !free) lines.push('전체적으로 만족스러웠어요.');
-  if (free) lines.push(/[.!?~]$/.test(free)?free:free+'.');
-  if (cons) lines.push(`아쉬운 점을 하나 꼽자면, ${/[.!?~]$/.test(cons)?cons:cons+'.'}`);
-  lines.push(pick(CLOSE[tone]));
-  let text = lines.join(' ');
-  if (tone!=='short') { // 문단 나누기
-    const mid = Math.ceil(lines.length/2);
-    text = lines.slice(0,mid).join(' ') + '\n\n' + lines.slice(mid).join(' ');
-  }
-  if (tone==='fun') text = text.replace(/요\.(\s|$)/, '요!$1');
-  return text;
+/* ===== Gemini가 실패할 때 쓰는 자체 문장 (한국어 / 영어) ===== */
+const KO = I18N.ko;
+const F = {
+  p50:[ '요즘 물가에 1인 5만원으로 와인, 맥주, 식사, 커피까지 다 되는 곳은 처음 봤어요.', '5만원에 와인·맥주·식사·커피가 전부 들어 있어서 다들 놀랐어요.', '1인 5만원 안에 와인부터 커피까지 다 포함이라 총무 입장에서 정산이 정말 편했어요.' ],
+  wine:[ '와인 종류가 생각보다 많았고, 탭에서 바로 따라 줘서 그런지 맛이 깔끔했어요.', '와인 좋아하는 사람들은 이것저것 골라 마시는 재미가 있었다고 해요.' ],
+  beer:[ '와인 안 마시는 사람은 맥주로 가면 돼서 술 취향이 갈려도 문제없었어요.', '맥주도 같이 나와서 다들 각자 편한 걸로 마셨어요.' ],
+  food:[ '음식이 안주 수준이 아니라 한 끼 식사로 충분했어요.', '음식이 넉넉하게 나와서 다들 배부르게 먹었어요.' ],
+  coffee:[ '마지막에 커피까지 나와서 깔끔하게 마무리했어요.', '끝나고 커피까지 챙겨 주는 대관은 처음이었어요.' ],
+  value:[ '가격 생각하면 정말 남는 장사였어요.' ], mood:[ '시끄럽지 않아서 대화하기 좋았어요.' ], space:[ '인원이 많았는데도 자리가 넉넉했어요.' ],
+  staff:[ '직원분들이 테이블마다 세심하게 챙겨 주셨어요.' ], smooth:[ '세팅부터 마무리까지 알아서 해 주셔서 신경 쓸 게 없었어요.' ], photo:[ '조명이 예뻐서 단체 사진이 잘 나왔어요.' ]
+};
+const FE = { p50:'₩50,000 per person covered wine, beer, food and coffee. Hard to beat these days.', wine:'The wine, poured straight from the taps, was really good.', beer:'Beer was there too, so everyone found something they liked.',
+  food:'The food was a proper meal, not just snacks.', coffee:'They even finished with coffee.', value:'Great value for money.', mood:'Relaxed atmosphere, easy to talk.', space:'Plenty of space for a big group.',
+  staff:'The staff were friendly and attentive.', smooth:'Everything ran smoothly from start to finish.', loc:'Easy to find.', photo:'Lovely lighting for group photos.' };
+function composeKo(){
+  const b = BRANCHES[sel.value], occ = state.occ ? KO.occ[OCC_K.indexOf(state.occ)] : '', tone = state.tone;
+  const likes=[...state.likes], free=$('free').value.trim(), cons=$('cons').value.trim(), bn=b.short;
+  let first = occ ? (tone==='fun' ? `${occ}${josa(occ,'으로','로')} ${bn} 다녀왔는데 대만족이에요!` : `${occ} 자리로 ${bn}${josa(bn,'을','를')} 이용했어요.`) : `${bn}에서 모임을 했어요.`;
+  const head = likes.includes('p50')?['p50']:[]; let rest = shuffle(likes.filter(k=>k!=='p50')).slice(0, tone==='short'?1:4);
+  const lines=[first]; [...head,...rest].forEach(k=>{ if(k==='loc') lines.push(`${b.loc} 다들 찾아오기 편했어요.`); else if(F[k]) lines.push(pick(F[k])); });
+  if (free) lines.push(/[.!?~]$/.test(free)?free:free+'.'); if (cons) lines.push(`아쉬운 점을 하나 꼽자면, ${/[.!?~]$/.test(cons)?cons:cons+'.'}`);
+  lines.push(tone==='fun'?'다음 모임도 무조건 여기예요!':'다음 모임도 여기로 하려고요.');
+  return lines.join(' ');
+}
+function composeEn(){
+  const b = BRANCHES[sel.value], occ = state.occ ? I18N.en.occ[OCC_K.indexOf(state.occ)].toLowerCase() : 'group event';
+  const lines=[`We had our ${occ} at ${b.en}.`]; [...state.likes].slice(0,5).forEach(k=>FE[k]&&lines.push(FE[k]));
+  const free=$('free').value.trim(), cons=$('cons').value.trim(); if (free) lines.push(free); if (cons) lines.push('One thing to improve: '+cons);
+  lines.push('Would come back!'); return lines.join(' ');
 }
 
+/* ===== 초안 쓰기: Gemini 무료 등급 → 실패하면 자체 문장 ===== */
+async function api(params, ms){
+  const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), ms||9000);
+  try { const r = await fetch(SAVE_API,{method:'POST',body:new URLSearchParams(params),credentials:'omit',signal:ctl.signal}); return await r.json(); }
+  finally { clearTimeout(t); }
+}
 async function write(again){
-  /* Gemini 무료 등급(Apps Script type=write). 8초 안에 못 받거나 실패하면 화면 안 문장 조합으로 대신. */
-  try{
-    const LB = Object.fromEntries(LIKES), TB = Object.fromEntries(TONES);
-    const body = new URLSearchParams({ type:'write', branch:BRANCHES[sel.value].short, occ:on($('occ'))[0]||'',
-      likes:on($('likes')).map(k=>LB[k]||k).join(', '), free:$('free').value, cons:$('cons').value,
-      tone:TB[on($('tone'))[0]]||'담백하게', again: again?'1':'' });
-    const ctl = new AbortController(); const t = setTimeout(()=>ctl.abort(), 8000);
-    const r = await fetch(SAVE_API,{method:'POST',body,credentials:'omit',signal:ctl.signal});
-    clearTimeout(t);
-    const j = await r.json(); if (j && j.ok && j.text) return j.text;
-  }catch(e){}
-  return compose();
+  const p = { type:'write', branch:BRANCHES[sel.value].short, branchEn:BRANCHES[sel.value].en, occ: state.occ ? KO.occ[OCC_K.indexOf(state.occ)] : '',
+    likes:[...state.likes].map(k=>KO.likes[LIKE_K.indexOf(k)]).join(', '), free:$('free').value, cons:$('cons').value,
+    occEn: state.occ ? I18N.en.occ[OCC_K.indexOf(state.occ)] : '', likesEn:[...state.likes].map(k=>I18N.en.likes[LIKE_K.indexOf(k)]).join(', '),
+    tone: KO.tone[TONE_K.indexOf(state.tone)], again: again?'1':'', lang: isForeign()?cur:'ko', langName: isForeign()?enName(cur):'' };
+  try { const j = await api(p, isForeign()?12000:8000); if (j && j.ok && j.text) return { text:j.text, ko:j.ko||'' }; } catch(e){}
+  return isForeign() ? { text: composeEn(), ko: composeKo() } : { text: composeKo(), ko:'' };
 }
 async function gen(e){
   const again = e && e.currentTarget && e.currentTarget.id==='again';
-  const b1=$('gen'), b2=$('again'); const l1=b1.textContent, l2=b2.textContent;
-  b1.disabled=b2.disabled=true; b1.textContent='✍️ 쓰는 중…'; if(again) b2.textContent='쓰는 중…';
-  try{ $('text').value = await write(again); } finally { b1.disabled=b2.disabled=false; b1.textContent=l1; b2.textContent=l2; }
+  const b1=$('gen'), b2=$('again');
+  b1.disabled=b2.disabled=true; b1.textContent=T.writing; if(again) b2.textContent=T.writing;
+  try{ const r = await write(again); $('text').value = r.text; $('ko').value = r.ko; koFor = r.text; }
+  finally { b1.disabled=b2.disabled=false; b1.textContent=T.gen; b2.textContent=T.again; }
   lastGen = $('text').value;
-  $('out').classList.remove('hidden'); $('postCard').classList.remove('hidden');
+  $('koState').textContent='';
+  $('out').classList.remove('hidden'); $('postCard').classList.remove('hidden'); $('koBox').classList.toggle('hidden', !isForeign());
   $('out').scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('gen').onclick=gen; $('again').onclick=gen;
 
-function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
-async function copy(){
-  const v=$('text').value;
-  try{ await Promise.race([navigator.clipboard.writeText(v), new Promise((_,r)=>setTimeout(()=>r(new Error('t')),1200))]); }
-  catch(e){ const ta=$('text'); ta.select(); try{document.execCommand('copy');}catch(_){} }
-}
-$('copy').onclick=async()=>{await copy();toast('복사했어요');};
+/* 외국어 글을 손님이 고치면 1.5초 뒤 한국어 번역도 다시 */
+let koFor = '', koTimer = null;
+$('text').addEventListener('input', ()=>{
+  if (!isForeign()) return;
+  clearTimeout(koTimer); $('koState').textContent='…';
+  koTimer = setTimeout(async()=>{
+    const v = $('text').value.trim(); if (!v || v===koFor) { $('koState').textContent=''; return; }
+    try { const j = await api({type:'translate', text:v}, 9000); if (j && j.ok && j.ko && $('text').value.trim()===v) { $('ko').value=j.ko; koFor=v; } } catch(e){}
+    $('koState').textContent='';
+  }, 1500);
+});
 
+/* ===== 복사·저장·이동 ===== */
+function payload(){
+  const v=$('text').value.trim(), k=$('ko').value.trim();
+  return (isForeign() && k) ? v + '\n\n(한국어 번역)\n' + k : v;
+}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
+async function copy(){
+  const v=payload();
+  try{ await Promise.race([navigator.clipboard.writeText(v), new Promise((_,r)=>setTimeout(()=>r(new Error('t')),1200))]); }
+  catch(e){ const ta=document.createElement('textarea'); ta.value=v; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} ta.remove(); }
+}
+$('copy').onclick=async()=>{await copy();toast(T.tCopied);};
 function save(action){
-  const LB = Object.fromEntries(LIKES);
-  const body = new URLSearchParams({ type:'review', rid:RID, branch:sel.value, occ:on($('occ'))[0]||'',
-    likes:on($('likes')).map(k=>LB[k]||k).join(', '), tone:(Object.fromEntries(TONES)[on($('tone'))[0]]||''), text:$('text').value,
-    cons:$('cons').value, action,
+  const body = new URLSearchParams({ type:'review', rid:RID, branch:sel.value, occ: state.occ ? KO.occ[OCC_K.indexOf(state.occ)] : '',
+    likes:[...state.likes].map(k=>KO.likes[LIKE_K.indexOf(k)]).join(', '), tone:KO.tone[TONE_K.indexOf(state.tone)], text:payload(),
+    cons:$('cons').value, action, lang: cur,
     own:[$('free').value.trim()?'한마디':'', ($('text').value.trim()!==lastGen.trim())?'고침':''].filter(Boolean).join(' '), quote:$('quote').checked?'1':'' });
-  /* 쿠키 없이 보낸다: 구글 여러 계정 로그인 상태면 Apps Script가 쿠키 붙은 요청을 거부함(sendBeacon 안 됨) */
+  /* 쿠키 없이: 구글 여러 계정 로그인 상태면 Apps Script가 쿠키 붙은 요청을 거부함 */
   fetch(SAVE_API,{method:'POST',body,mode:'no-cors',credentials:'omit',keepalive:true}).catch(()=>{});
 }
 $('onlyUs').onclick=()=>{
-  if (!$('text').value.trim()) return toast('후기 글을 먼저 만들어 주세요');
+  if (!$('text').value.trim()) return toast(T.tNeed);
   save('only');
   $('out').classList.add('hidden'); $('postCard').classList.add('hidden'); $('thanks').classList.remove('hidden');
   $('thanks').scrollIntoView({behavior:'smooth',block:'center'});
 };
 document.querySelectorAll('[data-go]').forEach(btn=>btn.onclick=async()=>{
   const b = BRANCHES[sel.value]; save('google'); await copy();
-  const go = btn.dataset.go; let url;
-  if (go==='google') url='https://search.google.com/local/writereview?placeid='+b.google;
-  if (go==='naver')  url='https://m.place.naver.com/restaurant/'+b.naver+'/review/visitor';
-  if (go==='blog')   url='https://m.blog.naver.com/PostWriteForm.naver';
-  if (go==='insta')  url='https://www.instagram.com/';
-  toast('복사 완료! 별점 → 글칸 길게 눌러 붙여넣기');
-  setTimeout(()=>{ location.href = url; }, 700); /* 새 창은 폰에서 막히니 같은 창으로 이동 */
+  toast(T.tGo);
+  setTimeout(()=>{ location.href = 'https://search.google.com/local/writereview?placeid='+b.google+(isForeign()?'&hl='+encodeURIComponent(cur):''); }, 700);
 });
+render();
 </script>
 </body>
 </html>
