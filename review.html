@@ -144,6 +144,7 @@ const BRANCHES = {
 const AI_ENDPOINT = '';
 /* 후기 받는 곳: 시트 '탭샵바_행사안내페이지_손님응답' > '후기' 탭 (Apps Script type=review). 같은 손님은 rid로 한 줄만. */
 const SAVE_API = 'https://script.google.com/macros/s/AKfycbxOZFtdBChQh5_eq9HWDV_SpgMqKOGTnOe4uoVSLc8VNM8wJd93jWZ-sGM5VPAZpAta/exec';
+let lastGen = '';
 const RID = 'R' + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 
 const OCC = ['회사 회식','송년회','동창 모임','동호회','생일 파티','웨딩 애프터파티','세미나·워크숍'];
@@ -252,7 +253,7 @@ async function write(){
   return compose();
 }
 async function gen(){
-  $('text').value = await write();
+  $('text').value = await write(); lastGen = $('text').value;
   $('out').classList.remove('hidden'); $('postCard').classList.remove('hidden');
   $('out').scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -270,7 +271,8 @@ function save(action){
   const LB = Object.fromEntries(LIKES);
   const body = new URLSearchParams({ type:'review', rid:RID, branch:sel.value, occ:on($('occ'))[0]||'',
     likes:on($('likes')).map(k=>LB[k]||k).join(', '), tone:(Object.fromEntries(TONES)[on($('tone'))[0]]||''), text:$('text').value,
-    cons:$('cons').value, action, quote:$('quote').checked?'1':'' });
+    cons:$('cons').value, action,
+    own:[$('free').value.trim()?'한마디':'', ($('text').value.trim()!==lastGen.trim())?'고침':''].filter(Boolean).join(' '), quote:$('quote').checked?'1':'' });
   /* 쿠키 없이 보낸다: 구글 여러 계정 로그인 상태면 Apps Script가 쿠키 붙은 요청을 거부함(sendBeacon 안 됨) */
   fetch(SAVE_API,{method:'POST',body,mode:'no-cors',credentials:'omit',keepalive:true}).catch(()=>{});
 }
